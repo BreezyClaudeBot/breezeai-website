@@ -1,4 +1,35 @@
+const COMPANY_NAME = 'BreezeAI';
+
+function applyCompanyName() {
+  const TOKEN = '{{COMPANY_NAME}}';
+
+  const replaceToken = (value) => (typeof value === 'string' ? value.split(TOKEN).join(COMPANY_NAME) : value);
+
+  document.title = replaceToken(document.title);
+
+  document.querySelectorAll('meta[name="description"], meta[property="og:title"], meta[property="og:description"]').forEach((meta) => {
+    if (meta.content) meta.content = replaceToken(meta.content);
+  });
+
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let node;
+  while ((node = walker.nextNode())) {
+    if (node.nodeValue && node.nodeValue.includes(TOKEN)) {
+      node.nodeValue = replaceToken(node.nodeValue);
+    }
+  }
+
+  document.querySelectorAll('*').forEach((el) => {
+    for (const attr of el.attributes) {
+      if (attr.value && attr.value.includes(TOKEN)) {
+        el.setAttribute(attr.name, replaceToken(attr.value));
+      }
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  applyCompanyName();
   const menuToggle = document.querySelector('.menu-toggle');
   const navLinks = document.querySelector('.nav-links');
   if (menuToggle && navLinks) {
