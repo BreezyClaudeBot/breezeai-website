@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# switch-model: quick OpenClaw default model switcher
+# Usage:
+#   switch-model codex
+#   switch-model opus
+#   switch-model status
+
+usage() {
+  cat <<'EOF'
+Usage: switch-model <codex|opus|status>
+
+Switches OpenClaw default model between:
+  codex -> openai-codex/gpt-5.3-codex
+  opus  -> anthropic/claude-opus-4-6
+
+Examples:
+  switch-model codex
+  switch-model opus
+  switch-model status
+EOF
+}
+
+if ! command -v openclaw >/dev/null 2>&1; then
+  echo "Error: openclaw CLI not found in PATH" >&2
+  exit 1
+fi
+
+choice="${1:-}"
+
+case "$choice" in
+  codex|c)
+    model="openai-codex/gpt-5.3-codex"
+    ;;
+  opus|o)
+    model="anthropic/claude-opus-4-6"
+    ;;
+  status|s)
+    exec openclaw models status
+    ;;
+  -h|--help|help|"")
+    usage
+    exit 0
+    ;;
+  *)
+    echo "Unknown option: $choice" >&2
+    usage
+    exit 1
+    ;;
+esac
+
+openclaw models set "$model" >/dev/null
+
+echo "✅ Default model set to: $model"
+echo
+openclaw models status
