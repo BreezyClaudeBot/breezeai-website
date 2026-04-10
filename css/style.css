@@ -1,12 +1,12 @@
 :root {
-  --primary: #0EA5E9;
-  --primary-dark: #0284C7;
-  --accent: #06B6D4;
+  --primary: #2563EB;
+  --primary-dark: #1D4ED8;
+  --accent: #14B8A6;
   --dark-bg: #0F172A;
   --light-bg: #F8FAFC;
-  --text-dark: #1E293B;
+  --text-dark: #0F172A;
   --text-light: #F1F5F9;
-  --muted: #64748B;
+  --muted: #334155;
   --surface: #ffffff;
   --gradient: linear-gradient(120deg, var(--primary), var(--accent));
   --radius: 16px;
